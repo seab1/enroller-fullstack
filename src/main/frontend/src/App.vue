@@ -12,7 +12,8 @@
     </div>
     <div v-else>
       <button @click="changeToLogin()" :class="currentState == 'toLogout' ? 'button-outline' : ''">Go to login form</button>
-      <button @click="changeToLogout()" :class="currentState == 'toLogin' ? 'button-outline' : ''">Go to logout form</button>
+      <button @click="changeToLogout()" :class="currentState == 'toLogin' ? 'button-outline' : ''">Go to register form</button>
+      <div v-if="userAdditionStatus" class="error" :style="userAdditionStatus != 'User creation error!' ? 'background: #00FF00; border: 3px dotted green;' : ''">{{ userAdditionStatus }}</div>
       <login-form v-if="currentState == 'toLogin'" @login="login($event)"></login-form>
       <login-form v-else @login="register($event)" button-label="Zarejestruj sie"></login-form>
     </div>
@@ -29,7 +30,8 @@
         data() {
             return {
                 authenticatedUsername: "",
-                currentState: 'toLogin'
+                currentState: 'toLogin',
+                userAdditionStatus: ''
             };
         },
         methods: {
@@ -45,15 +47,15 @@
             {
               this.$http.post('participants', user)
               .then(response => {
-                  // udało się
+                this.userAdditionStatus = 'User created successfully!';
               })
               .catch(response => {
-                  // nie udało sie
+                this.userAdditionStatus = 'User creation error!';
               });
             },
 
-            changeToLogin() {this.currentState = 'toLogin';},
-            changeToLogout() {this.currentState = 'toLogout';}
+            changeToLogin() {this.currentState = 'toLogin'; this.userAdditionStatus = '';},
+            changeToLogout() {this.currentState = 'toLogout'; this.userAdditionStatus = '';}
         }
     };
 </script>
@@ -66,6 +68,13 @@
 
   .logo {
     vertical-align: middle;
+  }
+
+  .error {
+    border: 3px dotted red;
+    padding: 10px;
+    background: pink;
+    text-align: center;
   }
 </style>
 
