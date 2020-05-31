@@ -33,11 +33,11 @@
 
         methods:
         {
-            addNewMeeting(meeting) {this.$http.post('meetings', meeting).then(this.listUpdate())},
+            addNewMeeting(meeting) {this.$http.post('meetings', meeting).then(() => this.listUpdate());},
             addMeetingParticipant(meeting) {meeting.participants.push(this.username);},
             removeMeetingParticipant(meeting) {meeting.participants.splice(meeting.participants.indexOf(this.username), 1);},
-            deleteMeeting(meeting) {this.meetings.splice(this.meetings.indexOf(meeting), 1);},
-            listUpdate() {this.$http.get('meetings').then(response => {this.meetings = response.body})}
+            deleteMeeting(meeting) {this.$http.delete('meetings/' + meeting.id).then(() => this.listUpdate());},
+            listUpdate() {this.$http.get('meetings').then(response => {this.meetings = response.body;})}
         },
 
         mounted()

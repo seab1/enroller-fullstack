@@ -32,6 +32,21 @@ public class MeetingService
 		transaction.commit();
 		return meeting;
 	}
+	
+	public void delete(Meeting meeting)
+	{
+		Transaction transaction = this.connector.getSession().beginTransaction();
+		connector.getSession().delete(meeting);
+		transaction.commit();
+	}
+	
+	public Meeting update(Meeting meeting)
+	{
+		Transaction transaction = this.connector.getSession().beginTransaction();
+		connector.getSession().update(meeting);
+		transaction.commit();
+		return meeting;
+	}
     
     public Meeting findById(long id)
     {
